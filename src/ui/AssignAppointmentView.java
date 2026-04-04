@@ -23,9 +23,9 @@ public class AssignAppointmentView {
     private Stage stage;
     private User staff;
     private TableView<Appointment> appTable;
-    private TableView<User> techTable;
+    private TableView<Technician> techTable;
     private ObservableList<Appointment> appList;
-    private ObservableList<User> techList;
+    private ObservableList<Technician> techList;
 
     public AssignAppointmentView(Stage stage, User staff) {
         this.stage = stage;
@@ -67,13 +67,13 @@ public class AssignAppointmentView {
         techBox.setAlignment(Pos.CENTER);
         techTable = new TableView<>();
         
-        TableColumn<User, String> techIdCol = new TableColumn<>("Tech ID");
+        TableColumn<Technician, String> techIdCol = new TableColumn<>("Tech ID");
         techIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        TableColumn<User, String> techNameCol = new TableColumn<>("Name");
+        TableColumn<Technician, String> techNameCol = new TableColumn<>("Name");
         techNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         
         // Custom cell for shift management
-        TableColumn<User, String> shiftCol = new TableColumn<>("Shift");
+        TableColumn<Technician, String> shiftCol = new TableColumn<>("Shift");
         shiftCol.setCellValueFactory(new PropertyValueFactory<>("shift"));
 
         techTable.getColumns().addAll(techIdCol, techNameCol, shiftCol);
@@ -105,7 +105,7 @@ public class AssignAppointmentView {
         // Actions
         assignBtn.setOnAction(e -> {
             Appointment selectedApp = appTable.getSelectionModel().getSelectedItem();
-            User selectedTech = techTable.getSelectionModel().getSelectedItem();
+            Technician selectedTech = techTable.getSelectionModel().getSelectedItem();
             
             if (selectedApp != null && selectedTech != null) {
                 if (AppointmentService.assignTechnician(selectedApp.getId(), selectedTech.getId(), staff.getId())) {
@@ -155,6 +155,7 @@ public class AssignAppointmentView {
         techList = FXCollections.observableArrayList(
             FileHandler.loadAllUsers().stream()
                 .filter(u -> u instanceof Technician)
+                .map(u -> (Technician)u)
                 .collect(Collectors.toList())
         );
         techTable.setItems(techList);

@@ -110,7 +110,7 @@ public class MakeAppointmentView {
                 Appointment app = new Appointment(
                     id, customer.getId(), "N/A", "N/A", type, "S-001",
                     datePicker.getValue().toString(), selectedTime,
-                    Appointment.STATUS_PENDING, price, false
+                    Appointment.STATUS_PENDING, price, false, "N/A"
                 );
                 
                 // 3. Deduct Deposit

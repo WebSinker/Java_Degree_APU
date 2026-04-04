@@ -76,9 +76,11 @@ public class CustomerHistoryView {
         TableColumn<Appointment, Boolean> aptPaidCol = new TableColumn<>("Paid");
         aptPaidCol.setCellValueFactory(new PropertyValueFactory<>("paid"));
 
-        TableColumn<Appointment, Void> aptActionCol = new TableColumn<>("Action");
+        TableColumn<Appointment, Void> aptActionCol = new TableColumn<>("Actions");
         aptActionCol.setCellFactory(col -> new TableCell<>() {
-            private final Button payBtn = new Button();
+            private final Button payBtn = new Button("Pay");
+            private final Button chatBtn = new Button("Chat");
+            private final HBox btnBox = new HBox(8, payBtn, chatBtn);
             {
                 payBtn.getStyleClass().add("primary-button");
                 payBtn.setStyle("-fx-font-size: 11px; -fx-padding: 3 8 3 8;");
@@ -86,6 +88,16 @@ public class CustomerHistoryView {
                     Appointment apt = getTableView().getItems().get(getIndex());
                     handlePayment(apt);
                 });
+                
+                chatBtn.getStyleClass().add("secondary-button");
+                chatBtn.setStyle("-fx-font-size: 11px; -fx-padding: 3 8 3 8;");
+                chatBtn.setOnAction(e -> {
+                    Appointment apt = getTableView().getItems().get(getIndex());
+                    String techName = "Technician (" + apt.getTechnicianId() + ")";
+                    ChatView cv = new ChatView(stage, customer, apt.getId(), techName, stage.getScene());
+                    stage.setScene(cv.createScene());
+                });
+                btnBox.setAlignment(Pos.CENTER_LEFT);
             }
 
             @Override
@@ -95,12 +107,33 @@ public class CustomerHistoryView {
                     setGraphic(null);
                 } else {
                     Appointment apt = getTableView().getItems().get(getIndex());
-                    if (Appointment.STATUS_COMPLETED.equals(apt.getStatus()) && !apt.isPaid()) {
+                    payBtn.setVisible(Appointment.STATUS_COMPLETED.equals(apt.getStatus()) && !apt.isPaid());
+                    payBtn.setManaged(payBtn.isVisible());
+                    if (payBtn.isVisible()) {
                         payBtn.setText("Pay RM " + String.format("%.2f", apt.getPrice() - 50.0));
-                        setGraphic(payBtn);
-                    } else {
-                        setGraphic(null);
                     }
+                    
+                    boolean hasTech = !apt.getTechnicianId().equals("N/A");
+                    chatBtn.setVisible(hasTech);
+                    chatBtn.setManaged(chatBtn.isVisible());
+
+                    boolean hasNote = apt.getServiceReport() != null && !apt.getServiceReport().equals("N/A");
+                    Button noteBtn = new Button("View Note");
+                    noteBtn.getStyleClass().add("secondary-button");
+                    noteBtn.setStyle("-fx-font-size: 11px; -fx-padding: 3 8 3 8;");
+                    noteBtn.setOnAction(e -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Technician's Service Note");
+                        alert.setHeaderText("Note for Appointment: " + apt.getId());
+                        alert.setContentText(apt.getServiceReport());
+                        alert.showAndWait();
+                    });
+
+                    btnBox.getChildren().clear();
+                    btnBox.getChildren().addAll(payBtn, chatBtn);
+                    if (hasNote) btnBox.getChildren().add(noteBtn);
+                    
+                    setGraphic(btnBox);
                 }
             }
         });

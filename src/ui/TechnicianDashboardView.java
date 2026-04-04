@@ -3,6 +3,7 @@ package ui;
 import models.Technician;
 import models.User;
 import models.Appointment;
+import services.AppointmentService;
 import utils.FileHandler;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
@@ -11,7 +12,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -63,29 +66,65 @@ public class TechnicianDashboardView {
 
         Button completeBtn = new Button("Mark as Completed");
         completeBtn.getStyleClass().add("primary-button");
-        
+        completeBtn.setDisable(true);
+
+        Button chatBtn = new Button("Chat with Customer");
+        chatBtn.getStyleClass().add("primary-button");
+        chatBtn.setDisable(true);
+
+        Button noteBtn = new Button("Update Service Note");
+        noteBtn.getStyleClass().add("primary-button");
+        noteBtn.setDisable(true);
+
         Button logoutBtn = new Button("Logout");
         logoutBtn.getStyleClass().add("secondary-button");
 
-        root.getChildren().addAll(titleLabel, welcomeLabel, new Label("Your Assigned Tasks:"), table, completeBtn, logoutBtn);
+        HBox actions = new HBox(15, completeBtn, chatBtn, noteBtn, logoutBtn);
+        actions.setAlignment(Pos.CENTER);
+
+        root.getChildren().addAll(titleLabel, welcomeLabel, new Label("Your Assigned Tasks:"), table, actions);
 
         // Actions
         completeBtn.setOnAction(e -> {
             Appointment selected = table.getSelectionModel().getSelectedItem();
             if (selected != null) {
                 selected.setStatus(Appointment.STATUS_COMPLETED);
-                List<Appointment> all = FileHandler.loadAllAppointments();
-                for (int i = 0; i < all.size(); i++) {
-                    if (all.get(i).getId().equals(selected.getId())) {
-                        all.set(i, selected);
-                        break;
-                    }
-                }
-                FileHandler.saveAllAppointments(all);
+                AppointmentService.updateAppointment(selected);
                 table.setItems(FXCollections.observableArrayList(FileHandler.loadAppointmentsByTechnician(tech.getId())));
             }
         });
 
+        chatBtn.setOnAction(e -> {
+            Appointment selected = table.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                String customerName = "Customer (" + selected.getCustomerId() + ")"; 
+                ChatView cv = new ChatView(stage, tech, selected.getId(), customerName, stage.getScene());
+                stage.setScene(cv.createScene());
+            }
+        });
+
+        noteBtn.setOnAction(e -> {
+            Appointment selected = table.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                TextInputDialog dialog = new TextInputDialog(selected.getServiceReport());
+                dialog.setTitle("Service Note");
+                dialog.setHeaderText("Add a comment for the customer regarding this service:");
+                dialog.setContentText("Note:");
+                dialog.showAndWait().ifPresent(note -> {
+                    selected.setServiceReport(note);
+                    AppointmentService.updateAppointment(selected);
+                    table.refresh();
+                });
+            }
+        });
+
+        table.getSelectionModel().selectedItemProperty().addListener((obs, old, val) -> {
+            boolean selected = (val != null);
+            completeBtn.setDisable(!selected || val.getStatus().equals(Appointment.STATUS_COMPLETED));
+            chatBtn.setDisable(!selected);
+            noteBtn.setDisable(!selected);
+        });
+        
         logoutBtn.setOnAction(e -> {
             LoginView loginView = new LoginView(stage);
             stage.setScene(loginView.createScene());

@@ -33,6 +33,7 @@ public abstract class User {
     public String getRole() { return role; }
     public String getCreatorId() { return creatorId; }
     public double getBalance() { return balance; }
+    public String getShift() { return "N/A"; } // Generic User has no shift, overridden by Technician
 
     public void setUsername(String username) { this.username = username; }
     public void setPassword(String password) { this.password = password; }

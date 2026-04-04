@@ -29,6 +29,7 @@ public class FileHandler {
     private static final String FEEDBACK_FILE     = "data/feedback.csv";
     private static final String APPOINTMENTS_FILE = "data/appointments.csv";
     private static final String RECEIPTS_FILE     = "data/receipts.csv";
+    private static final String CHATS_FILE        = "data/interactions.csv";
 
     // ── Initialisation ───────────────────────────────────────────────────────
 
@@ -43,7 +44,7 @@ public class FileHandler {
 
             String[] files = {
                 USERS_FILE, SERVICES_FILE, FEEDBACK_FILE,
-                APPOINTMENTS_FILE, RECEIPTS_FILE
+                APPOINTMENTS_FILE, RECEIPTS_FILE, CHATS_FILE
             };
             for (String f : files) {
                 File file = new File(f);
@@ -177,12 +178,18 @@ public class FileHandler {
                 line = line.trim();
                 if (line.isEmpty()) continue;
                 String[] data = line.split(",");
-                if (data.length == 6) {
+                if (data.length >= 6) {
                     try {
+                        String appId = (data.length >= 8) ? data[2] : "N/A";
+                        String techId = (data.length >= 8) ? data[3] : "N/A";
+                        String comment = (data.length >= 8) ? data[4] : data[2];
+                        int rating = (data.length >= 8) ? Integer.parseInt(data[5]) : Integer.parseInt(data[3]);
+                        String date = (data.length >= 8) ? data[6] : data[4];
+                        boolean isHidden = (data.length >= 8) ? Boolean.parseBoolean(data[7]) : Boolean.parseBoolean(data[5]);
+                        
                         list.add(new Feedback(
-                            data[0], data[1], data[2],
-                            Integer.parseInt(data[3]),
-                            data[4], Boolean.parseBoolean(data[5])));
+                            data[0], data[1], appId, techId,
+                            comment, rating, date, isHidden));
                     } catch (NumberFormatException e) {
                         System.err.println("Skipping malformed feedback line: " + line);
                     }
@@ -328,5 +335,36 @@ public class FileHandler {
             if (r.getCustomerId().equals(customerId)) result.add(r);
         }
         return result;
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // CHATS
+    // ══════════════════════════════════════════════════════════════════════════
+
+    public static List<ChatMessage> loadChatsForAppointment(String appId) {
+        List<ChatMessage> list = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(CHATS_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                ChatMessage m = ChatMessage.fromCSV(line.trim());
+                if (m != null && m.getAppointmentId().equals(appId)) {
+                    list.add(m);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading chats: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public static boolean saveChatMessage(ChatMessage msg) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CHATS_FILE, true))) {
+            bw.write(msg.toCSV());
+            bw.newLine();
+            return true;
+        } catch (IOException e) {
+            System.err.println("Error saving chat: " + e.getMessage());
+            return false;
+        }
     }
 }

@@ -15,11 +15,12 @@ public class Appointment {
     private String status;        
     private double price;         
     private boolean paid;         
+    private String serviceReport; 
 
     public Appointment(String id, String customerId, String technicianId,
                        String counterStaffId, String serviceType, String serviceId,
                        String date, String timeSlot, String status,
-                       double price, boolean paid) {
+                       double price, boolean paid, String serviceReport) {
         this.id            = id;
         this.customerId    = customerId;
         this.technicianId  = technicianId;
@@ -31,6 +32,7 @@ public class Appointment {
         this.status        = status;
         this.price         = price;
         this.paid          = paid;
+        this.serviceReport = serviceReport;
     }
 
     public String getId()            { return id; }
@@ -44,6 +46,7 @@ public class Appointment {
     public String getStatus()        { return status; }
     public double getPrice()         { return price; }
     public boolean isPaid()          { return paid; }
+    public String getServiceReport() { return serviceReport; }
 
     public void setStatus(String status) { this.status = status; }
     public void setPaid(boolean paid)    { this.paid = paid; }
@@ -53,24 +56,28 @@ public class Appointment {
     public void setTimeSlot(String timeSlot) { this.timeSlot = timeSlot; }
     public void setPrice(double price) { this.price = price; }
     public void setServiceType(String serviceType) { this.serviceType = serviceType; }
+    public void setServiceReport(String serviceReport) { this.serviceReport = serviceReport; }
 
     public String toCSV() {
+        String safeReport = serviceReport.replace(",", "[COMMA]");
         return String.join(",",
             id, customerId, technicianId, counterStaffId,
             serviceType, serviceId, date, timeSlot, status,
-            String.valueOf(price), String.valueOf(paid));
+            String.valueOf(price), String.valueOf(paid), safeReport);
     }
 
     public static Appointment fromCSV(String line) {
         if (line == null || line.isBlank()) return null;
         String[] p = line.split(",");
-        if (p.length != 11) return null;
+        if (p.length < 11) return null;
         try {
+            String report = (p.length >= 12) ? p[11].replace("[COMMA]", ",") : "N/A";
             return new Appointment(
                 p[0], p[1], p[2], p[3], p[4], p[5],
                 p[6], p[7], p[8],
                 Double.parseDouble(p[9]),
-                Boolean.parseBoolean(p[10])
+                Boolean.parseBoolean(p[10]),
+                report
             );
         } catch (NumberFormatException e) {
             return null;

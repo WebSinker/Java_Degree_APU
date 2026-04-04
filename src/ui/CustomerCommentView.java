@@ -175,6 +175,8 @@ public class CustomerCommentView {
             Feedback newFeedback = new Feedback(
                 feedbackId,
                 customer.getId(), 
+                selectedApt.getId(),
+                selectedApt.getTechnicianId(),
                 safeComment,
                 rating,
                 today,

@@ -1,5 +1,6 @@
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\Main.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\models\Appointment.java
+C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\models\ChatMessage.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\models\CounterStaff.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\models\Customer.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\models\Developer.java
@@ -15,6 +16,7 @@ C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\services\Authen
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\services\CustomerService.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\services\UserService.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\ui\AssignAppointmentView.java
+C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\ui\ChatView.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\ui\CounterStaffDashboardView.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\ui\CreateManagerView.java
 C:\Users\leeyo\Downloads\Java_Degree_APU (2)\Java_Degree_APU\src\ui\CustomerCommentView.java
