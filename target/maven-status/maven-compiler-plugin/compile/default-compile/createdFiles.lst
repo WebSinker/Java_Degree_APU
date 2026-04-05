@@ -36,6 +36,7 @@ models\Technician.class
 ui\TechnicianDashboardView.class
 ui\CustomerFeedbackView$1.class
 services\UserService.class
+ui\CustomerHistoryView$2.class
 ui\LoginFrame$1.class
 ui\LoginFrame.class
 ui\CustomerCommentView.class

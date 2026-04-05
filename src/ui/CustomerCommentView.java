@@ -104,9 +104,7 @@ public class CustomerCommentView {
         commentArea.setWrapText(true);
         commentArea.setPrefRowCount(5);
         commentArea.setMaxWidth(Double.MAX_VALUE);
-        commentArea.setStyle(
-            "-fx-control-inner-background: rgba(255,255,255,0.05); " +
-            "-fx-text-fill: #e0e0e0;");
+        commentArea.getStyleClass().add("text-area");
 
         Label charCount = new Label("0 / 500 characters");
         charCount.setStyle("-fx-text-fill: #b3c5d5; -fx-font-size: 11px;");

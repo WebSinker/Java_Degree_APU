@@ -117,8 +117,7 @@ public class CustomerFeedbackView {
         detailArea.setWrapText(true);
         detailArea.setPrefRowCount(4);
         detailArea.setPromptText("Select a row to see the full comment here.");
-        detailArea.setStyle("-fx-control-inner-background: rgba(255,255,255,0.05); " +
-                            "-fx-text-fill: #e0e0e0;");
+        detailArea.getStyleClass().add("text-area");
 
         table.getSelectionModel().selectedItemProperty().addListener((obs, old, sel) -> {
             if (sel != null) {

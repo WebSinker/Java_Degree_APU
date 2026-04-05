@@ -32,7 +32,7 @@
 
 .text-field, .password-field {
     -fx-background-color: rgba(255, 255, 255, 0.9);
-    -fx-text-fill: #000000;
+    -fx-text-fill: #000000 !important;
     -fx-prompt-text-fill: #666666;
     -fx-padding: 12px 15px;
     -fx-background-radius: 8px;

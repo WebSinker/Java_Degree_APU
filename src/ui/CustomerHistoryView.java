@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import javafx.util.Duration;
 import java.util.List;
 
 public class CustomerHistoryView {
+    // ...
 
     private final Stage stage;
     private final User  customer;
@@ -183,9 +185,27 @@ public class CustomerHistoryView {
         TableColumn<Receipt, Double> rcptAmtCol  = new TableColumn<>("Amount Paid (RM)");
         rcptAmtCol.setCellValueFactory(new PropertyValueFactory<>("amountPaid"));
 
+        TableColumn<Receipt, Void> rcptActionCol = new TableColumn<>("Action");
+        rcptActionCol.setCellFactory(col -> new TableCell<>() {
+            private final Button vBtn = new Button("View Receipt");
+            {
+                vBtn.getStyleClass().add("primary-button");
+                vBtn.setStyle("-fx-font-size: 11px; -fx-padding: 3 8 3 8;");
+                vBtn.setOnAction(e -> {
+                    Receipt r = getTableView().getItems().get(getIndex());
+                    showReceiptPopup(r);
+                });
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : vBtn);
+            }
+        });
+
         rcptTable.getColumns().addAll(
             rcptIdCol, rcptAptCol, rcptDateCol,
-            rcptNameCol, rcptTypeCol, rcptAmtCol);
+            rcptNameCol, rcptTypeCol, rcptAmtCol, rcptActionCol);
 
         List<Receipt> myReceipts =
             FileHandler.loadReceiptsByCustomer(customer.getId());
@@ -228,7 +248,55 @@ public class CustomerHistoryView {
         return scene;
     }
 
+    private void showReceiptPopup(Receipt selected) {
+        Stage popup = new Stage();
+        popup.setTitle("Official Receipt: " + selected.getId());
+        
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(30));
+        content.setStyle("-fx-background-color: white;");
+        content.setAlignment(Pos.TOP_CENTER);
+
+        Label header = new Label("APU AUTOMOTIVE SERVICE CENTRE");
+        header.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
+        
+        Separator sep = new Separator();
+        
+        GridPane details = new GridPane();
+        details.setHgap(20); details.setVgap(10);
+        details.setAlignment(Pos.CENTER);
+        
+        addReceiptRow(details, 0, "Receipt ID:", selected.getId());
+        addReceiptRow(details, 1, "Date:", selected.getPaymentDate());
+        addReceiptRow(details, 2, "Appointment ID:", selected.getAppointmentId());
+        addReceiptRow(details, 3, "Service Type:", selected.getServiceType());
+        addReceiptRow(details, 4, "Amount Paid:", "RM " + String.format("%.2f", selected.getAmountPaid()));
+        addReceiptRow(details, 5, "Counter Staff:", selected.getCounterStaffId().equals("Wallet") ? "Self-Service (Wallet)" : "Staff (" + selected.getCounterStaffId() + ")");
+
+        Label footer = new Label("Thank you for your business!\nDigital copy stored in your account.");
+        footer.setStyle("-fx-font-style: italic; -fx-text-fill: #666; -fx-text-alignment: center;");
+        
+        Button closeBtn = new Button("Close Receipt");
+        closeBtn.getStyleClass().add("primary-button");
+        closeBtn.setOnAction(e -> popup.close());
+
+        content.getChildren().addAll(header, sep, details, new Separator(), footer, closeBtn);
+        Scene scene = new Scene(content, 450, 500);
+        popup.setScene(scene);
+        popup.show();
+    }
+
+    private void addReceiptRow(GridPane gp, int row, String label, String value) {
+        Label l = new Label(label);
+        l.setStyle("-fx-font-weight: bold; -fx-text-fill: #333;");
+        Label v = new Label(value);
+        v.setStyle("-fx-text-fill: black;");
+        gp.add(l, 0, row);
+        gp.add(v, 1, row);
+    }
+
     private void handlePayment(Appointment apt) {
+        // ... (existing code below)
         double due = apt.getPrice() - 50.0;
         if (customer.getBalance() < due) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
