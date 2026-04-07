@@ -52,24 +52,9 @@ public class TopUpView {
                     return;
                 }
 
-                customer.setBalance(customer.getBalance() + amount);
-                
-                // Save to file
-                List<User> all = FileHandler.loadAllUsers();
-                for (int i = 0; i < all.size(); i++) {
-                    if (all.get(i).getId().equals(customer.getId())) {
-                        all.set(i, customer);
-                        break;
-                    }
-                }
-                FileHandler.saveAllUsers(all);
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Top-up successful! New balance: RM " + String.format("%.2f", customer.getBalance()));
-                alert.showAndWait();
-                
-                currentBalanceLabel.setText("Current Balance: RM " + String.format("%.2f", customer.getBalance()));
-                amountField.clear();
+                // Redirect to Bank Simulation instead of immediate balance update
+                BankSimulationView bank = new BankSimulationView(stage, customer, amount, stage.getScene());
+                stage.setScene(bank.createScene());
 
             } catch (NumberFormatException ex) {
                 showError("Invalid amount format.");

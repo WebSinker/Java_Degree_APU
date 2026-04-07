@@ -296,50 +296,55 @@ public class CustomerHistoryView {
     }
 
     private void handlePayment(Appointment apt) {
-        // ... (existing code below)
         double due = apt.getPrice() - 50.0;
         if (customer.getBalance() < due) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Insufficient Funds");
             alert.setHeaderText(null);
-            alert.setContentText("Your balance is RM " + String.format("%.2f", customer.getBalance()) + 
-                                ". You need RM " + String.format("%.2f", due) + " to complete payment.");
-            alert.showAndWait();
+            alert.setContentText("You need RM " + String.format("%.2f", due) + " but only have RM " 
+                                + String.format("%.2f", customer.getBalance()) + ". Please top up first.");
+            alert.show();
             return;
         }
 
-        apt.setPaid(true);
-        customer.setBalance(customer.getBalance() - due);
+        // Trigger PIN verification pad
+        PinVerificationPopup pinPad = new PinVerificationPopup(customer, (Boolean success) -> {
+            if (success) {
+                customer.setBalance(customer.getBalance() - due);
+                apt.setPaid(true);
+                apt.setStatus(Appointment.STATUS_COMPLETED); // Set to completed when paid
 
-        // Save everything
-        AppointmentService.updateAppointment(apt);
-        List<User> users = FileHandler.loadAllUsers();
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId().equals(customer.getId())) {
-                users.set(i, customer);
-                break;
+                // Save appointment and user balance
+                AppointmentService.updateAppointment(apt);
+                List<User> users = FileHandler.loadAllUsers();
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i).getId().equals(customer.getId())) {
+                        users.set(i, customer);
+                        break;
+                    }
+                }
+                FileHandler.saveAllUsers(users);
+
+                // Generate Receipt
+                Receipt r = new Receipt(
+                    "R-" + java.util.UUID.randomUUID().toString().substring(0, 5).toUpperCase(),
+                    apt.getId(), customer.getId(), apt.getServiceType(), 
+                    apt.getServiceType() + " Service", apt.getPrice(), 
+                    java.time.LocalDate.now().toString(), "Wallet"
+                );
+                FileHandler.saveReceipt(r);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Payment Success");
+                alert.setHeaderText("Thank you for your payment!");
+                alert.setContentText("RM " + String.format("%.2f", due) + " deducted from your wallet. Your new balance: RM " + 
+                                    String.format("%.2f", customer.getBalance()));
+                alert.show();
+
+                // Refresh view
+                stage.setScene(createScene());
             }
-        }
-        FileHandler.saveAllUsers(users);
-
-        // Generate Receipt
-        // Constructor: id, appointmentId, customerId, serviceType, serviceName, amountPaid, paymentDate, counterStaffId
-        Receipt r = new Receipt(
-            "R-" + java.util.UUID.randomUUID().toString().substring(0, 5).toUpperCase(),
-            apt.getId(), customer.getId(), apt.getServiceType(), 
-            apt.getServiceType() + " Service", apt.getPrice(), 
-            java.time.LocalDate.now().toString(), "Wallet"
-        );
-        FileHandler.saveReceipt(r);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Payment Success");
-        alert.setHeaderText("Thank you for your payment!");
-        alert.setContentText("RM " + String.format("%.2f", due) + " deducted from your wallet. Your new balance: RM " + 
-                            String.format("%.2f", customer.getBalance()));
-        alert.show();
-
-        // Refresh view
-        stage.setScene(createScene());
+        });
+        pinPad.show();
     }
 }

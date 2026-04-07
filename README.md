@@ -13,13 +13,21 @@ A modern, robust, and secure management system designed for the APU Automotive S
 
 ### 💳 E-Wallet & Payment System
 - **Digital Wallet**: Secure, persistent balance for all customers.
+- **Mandatory PIN Security**: **6-digit Payment PIN** required for all wallet-based transactions.
+- **Bank Simulation Bridge**: Realistic **APU-Bank Simulation** for top-ups, including credential verification and transaction authorization.
 - **Mandatory Deposit**: Automated RM 50 deposit upon booking to ensure commitment.
-- **Integrated Payments**: Deduct remaining service fees directly from the wallet.
-- **History & Receipts**: Automated receipt generation and storage for all transactions.
+- **Integrated Payments**: Deduct remaining service fees directly from the wallet after secure PIN verification.
+- **History & Receipts**: Automated receipt generation, professional digital receipt viewing, and transaction logging.
 
-### 🛡️ Anti-Fraud Measures
+### 🛡️ Anti-Fraud & Security
+- **Payment Authorisation**: Multi-factor approach (Account login + Payment PIN) for high-value operations.
 - **Debt Protection**: New bookings are automatically blocked if a customer has outstanding unpaid "Completed" services.
 - **Identity Enforcement**: Contact number uniqueness validation prevents account abandonment and duplication.
+
+### 🎨 Modern UI/UX
+- **Glassmorphism Aesthetic**: Elegant, semi-transparent design system with dynamic animations.
+- **High-Contrast Visibility**: Standardized black-text accessibility for all forms, tables, and feedback areas.
+- **Data Visualization**: Interactive business performance charts for Manager-level reporting.
 
 ### 📅 Advanced Scheduling
 - **Slot Management**: Precise scheduling between 08:00 AM and 10:00 PM.

@@ -1,6 +1,6 @@
-C-117CC5F6,test1,test123456,lee,01159706170,Customer,N/A,System,200.0
-M-EE63BE04,Lee,admin123,Lee Yong Han,1158865841,Manager,N/A,System,0.0
-S-401B8,KHoong,LKH123,Lau,N/A,CounterStaff,N/A,M-EE63BE04,0.0
-T-478FE,KWai,LKW123,Leong,N/A,Technician,Morning,M-EE63BE04,0.0
-T-20EBD,Juin,DJ123,Darren,N/A,Technician,Night,M-EE63BE04,0.0
-T-19E07,Darren,juin123,Juin,N/A,Technician,Morning,M-EE63BE04,0.0
+C-117CC5F6,test1,test123456,lee,01159706170,Customer,N/A,System,100.0,123456
+M-EE63BE04,Lee,admin123,Lee Yong Han,1158865841,Manager,N/A,System,0.0,123456
+S-401B8,KHoong,LKH123,Lau,N/A,CounterStaff,N/A,M-EE63BE04,0.0,123456
+T-478FE,KWai,LKW123,Leong,N/A,Technician,Morning,M-EE63BE04,0.0,123456
+T-20EBD,Juin,DJ123,Darren,N/A,Technician,Night,M-EE63BE04,0.0,123456
+T-19E07,Darren,juin123,Juin,N/A,Technician,Morning,M-EE63BE04,0.0,123456

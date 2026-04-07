@@ -13,6 +13,6 @@ public class Technician extends User {
 
     @Override
     public String toCSV() {
-        return String.join(",", id, username, password, name, contactNumber, role, shift, creatorId, String.valueOf(balance));
+        return String.join(",", id, username, password, name, contactNumber, role, shift, creatorId, String.valueOf(balance), paymentPin);
     }
 }

@@ -14,7 +14,9 @@ models\Appointment.class
 ui\LoginFrame$2.class
 services\AuthenticationService.class
 ui\RegisterFrame$1.class
+ui\BankSimulationView.class
 ui\ServicePricingView.class
+ui\PinSetupView.class
 ui\CustomerFeedbackView.class
 models\Receipt.class
 ui\MakeAppointmentView.class
@@ -34,6 +36,7 @@ Main.class
 models\ChatMessage.class
 models\Technician.class
 ui\TechnicianDashboardView.class
+ui\PinVerificationPopup.class
 ui\CustomerFeedbackView$1.class
 services\UserService.class
 ui\CustomerHistoryView$2.class

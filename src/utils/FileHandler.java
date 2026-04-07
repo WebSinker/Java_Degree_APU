@@ -95,6 +95,7 @@ public class FileHandler {
                        name = data[3], phone = data[4], role = data[5];
                 
                 double balance = (data.length > 8) ? Double.parseDouble(data[8]) : 0.0;
+                String pin = (data.length > 9) ? data[9] : "123456"; 
                 String shift = (data.length > 6) ? data[6] : "N/A";
                 String creatorId = (data.length > 7) ? data[7] : "System";
 
@@ -109,6 +110,7 @@ public class FileHandler {
                 }
                 if (u != null) {
                     u.setBalance(balance);
+                    u.setPaymentPin(pin);
                     users.add(u);
                 }
             }

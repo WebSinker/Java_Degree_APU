@@ -106,18 +106,9 @@ public class RegisterView {
             String id = "C-" + java.util.UUID.randomUUID().toString().substring(0, 8).toUpperCase();
             Customer newCustomer = new Customer(id, username, password, name, contact, "Self");
 
-            String result = AuthenticationService.registerUser(newCustomer);
-
-            if ("Success".equals(result)) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Registration Successful! You may now log in.");
-                alert.showAndWait();
-                returnToLogin();
-            } else {
-                showError(errorLabel, result, grid);
-            }
+            // Instead of registering immediately, proceed to PIN setup
+            PinSetupView pinSetup = new PinSetupView(stage, newCustomer);
+            stage.setScene(pinSetup.createScene());
         });
 
         cancelBtn.setOnAction(e -> returnToLogin());

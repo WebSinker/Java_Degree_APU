@@ -7,6 +7,6 @@ public class CounterStaff extends User {
 
     @Override
     public String toCSV() {
-        return String.join(",", id, username, password, name, contactNumber, role, "N/A", creatorId, String.valueOf(balance));
+        return String.join(",", id, username, password, name, contactNumber, role, "N/A", creatorId, String.valueOf(balance), paymentPin);
     }
 }
