@@ -54,7 +54,7 @@ public class PaymentView {
         });
         root.getChildren().add(backBtn);
 
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         return scene;
     }

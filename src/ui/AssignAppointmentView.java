@@ -139,7 +139,7 @@ public class AssignAppointmentView {
             stage.setScene(dashboard.createScene());
         });
 
-        Scene scene = new Scene(root, 1100, 800);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         return scene;
     }

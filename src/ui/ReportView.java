@@ -122,13 +122,15 @@ public class ReportView {
 
         root.getChildren().addAll(title, chartsGrid, financialBox, logTitle, logTable, summaryLabel, backBtn);
 
-        backBtn.setOnAction(e -> {
-            ManagerDashboardView dashboard = new ManagerDashboardView(stage, manager);
-            stage.setScene(dashboard.createScene());
-        });
+        backBtn.setOnAction(e -> goBack());
 
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         return scene;
+    }
+
+    private void goBack() {
+        ManagerDashboardView dashboard = new ManagerDashboardView(stage, manager);
+        stage.setScene(dashboard.createScene());
     }
 }

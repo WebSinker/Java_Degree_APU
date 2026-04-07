@@ -143,7 +143,7 @@ public class MakeAppointmentView {
         // Enable book button when slot is selected
         // (Handled in refreshTimeSlots)
 
-        Scene scene = new Scene(root, 900, 800);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         return scene;
     }

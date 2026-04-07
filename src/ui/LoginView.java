@@ -123,8 +123,9 @@ public class LoginView {
             stage.setScene(registerView.createScene());
         });
 
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        stage.setResizable(false);
 
         StringBuilder keyBuffer = new StringBuilder();
         scene.addEventFilter(javafx.scene.input.KeyEvent.KEY_TYPED, event -> {

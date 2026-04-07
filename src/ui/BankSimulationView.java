@@ -92,7 +92,7 @@ public class BankSimulationView {
 
         cancelBtn.setOnAction(e -> stage.setScene(previousScene));
 
-        Scene scene = new Scene(root, 700, 600);
+        Scene scene = new Scene(root, 1000, 700);
         return scene;
     }
 

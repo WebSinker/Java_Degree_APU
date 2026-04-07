@@ -1,6 +1,5 @@
 package ui;
 
-import models.Appointment;
 import models.Feedback;
 import models.User;
 import utils.FileHandler;
@@ -48,7 +47,7 @@ public class CustomerFeedbackView {
         headerBox.setPadding(new Insets(0, 0, 10, 0));
 
         TableView<Feedback> table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         table.setPlaceholder(new Label("No feedback available for your appointments yet."));
 
         TableColumn<Feedback, String> idCol = new TableColumn<>("Feedback ID");
@@ -88,8 +87,7 @@ public class CustomerFeedbackView {
 
         table.getColumns().addAll(idCol, dateCol, ratingCol, commentCol);
 
-        List<Appointment> myAppointments =
-            FileHandler.loadAppointmentsByCustomer(customer.getId());
+        FileHandler.loadAppointmentsByCustomer(customer.getId());
 
         List<Feedback> allFeedback = FileHandler.loadAllFeedback();
         List<Feedback> myFeedback  = new ArrayList<>();
@@ -144,7 +142,7 @@ public class CustomerFeedbackView {
             new Label("Full Comment:"), detailArea,
             btnBox);
 
-        Scene scene = new Scene(root, 900, 620);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         root.setOpacity(0);

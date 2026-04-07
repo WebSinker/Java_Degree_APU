@@ -116,7 +116,7 @@ public class CustomerDashboardView {
             stage.setScene(loginView.createScene());
         });
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         root.setOpacity(0);

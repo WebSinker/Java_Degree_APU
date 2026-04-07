@@ -113,7 +113,7 @@ public class RegisterView {
 
         cancelBtn.setOnAction(e -> returnToLogin());
 
-        Scene scene = new Scene(root, 600, 550);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         // Animations

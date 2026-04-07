@@ -54,7 +54,7 @@ public class CustomerHistoryView {
         Tab serviceTab = new Tab("Service History");
 
         TableView<Appointment> aptTable = new TableView<>();
-        aptTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        aptTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         aptTable.setPlaceholder(new Label("No service records found."));
 
         TableColumn<Appointment, String> aptIdCol   = new TableColumn<>("Appointment ID");
@@ -148,7 +148,6 @@ public class CustomerHistoryView {
             FileHandler.loadAppointmentsByCustomer(customer.getId());
         aptTable.setItems(FXCollections.observableArrayList(myAppointments));
 
-        // Summary label
         long completedCount = myAppointments.stream()
             .filter(a -> Appointment.STATUS_COMPLETED.equals(a.getStatus()))
             .count();
@@ -164,7 +163,7 @@ public class CustomerHistoryView {
         Tab paymentTab = new Tab("Payment History");
 
         TableView<Receipt> rcptTable = new TableView<>();
-        rcptTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        rcptTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         rcptTable.setPlaceholder(new Label("No payment records found."));
 
         TableColumn<Receipt, String> rcptIdCol   = new TableColumn<>("Receipt ID");
@@ -211,7 +210,6 @@ public class CustomerHistoryView {
             FileHandler.loadReceiptsByCustomer(customer.getId());
         rcptTable.setItems(FXCollections.observableArrayList(myReceipts));
 
-        // Total amount summary
         double totalPaid = myReceipts.stream()
             .mapToDouble(Receipt::getAmountPaid)
             .sum();
@@ -233,12 +231,9 @@ public class CustomerHistoryView {
             stage.setScene(dashboard.createScene());
         });
 
-        HBox btnBox = new HBox(backBtn);
-        btnBox.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(headerBox, tabPane, backBtn);
 
-        root.getChildren().addAll(headerBox, tabPane, btnBox);
-
-        Scene scene = new Scene(root, 900, 580);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         root.setOpacity(0);

@@ -99,14 +99,12 @@ public class CreateManagerView {
                 alert.setContentText("Manager account created successfully.");
                 alert.showAndWait();
                 goBack();
-            } else {
-                showError(errorLabel, result, grid);
             }
         });
 
-        backBtn.setOnAction(e -> goBack());
+        backBtn.setOnAction(ev -> goBack());
 
-        Scene scene = new Scene(root, 600, 550);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         // Animations

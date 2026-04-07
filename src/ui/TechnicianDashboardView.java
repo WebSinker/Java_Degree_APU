@@ -130,7 +130,7 @@ public class TechnicianDashboardView {
             stage.setScene(loginView.createScene());
         });
 
-        Scene scene = new Scene(root, 900, 700);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         root.setOpacity(0);

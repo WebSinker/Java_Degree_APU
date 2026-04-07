@@ -109,7 +109,7 @@ public class PinSetupView {
             }
         });
 
-        Scene scene = new Scene(root, 600, 600);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         // Entrance Animation

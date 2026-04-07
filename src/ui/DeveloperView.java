@@ -51,7 +51,7 @@ public class DeveloperView {
             stage.setScene(loginView.createScene());
         });
 
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         // Animations

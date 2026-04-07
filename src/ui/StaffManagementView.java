@@ -122,7 +122,7 @@ public class StaffManagementView {
             stage.setScene(dashboard.createScene());
         });
 
-        Scene scene = new Scene(root, 900, 700);
+        Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         return scene;
     }
