@@ -1,0 +1,5 @@
+# Ignore Maven build folder
+target/
+
+# Ignore runtime data file
+data/users.csv
