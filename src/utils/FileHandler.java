@@ -1,13 +1,25 @@
 package utils;
 
-import models.*;
-import models.Appointment;
-import models.Receipt;
-import models.ServiceItem;
-import models.Feedback;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import models.Appointment;
+import models.ChatMessage;
+import models.CounterStaff;
+import models.Customer;
+import models.Developer;
+import models.Feedback;
+import models.Manager;
+import models.Receipt;
+import models.ServiceItem;
+import models.Technician;
+import models.User;
 
 /**
  * FileHandler – centralized data access layer for the APU-ASC system.
@@ -368,5 +380,11 @@ public class FileHandler {
             System.err.println("Error saving chat: " + e.getMessage());
             return false;
         }
+    }
+
+    public static List<Feedback> loadFeedbackByTechnician(String technicianId) {
+        return loadAllFeedback().stream()
+            .filter(f -> technicianId.equals(f.getTechnicianId()))
+            .collect(java.util.stream.Collectors.toList());
     }
 }
